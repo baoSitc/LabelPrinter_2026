@@ -1,0 +1,471 @@
+﻿<UserControl x:Class="LabelPrinter.Views.LabelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:LabelPrinter.Views"
+             xmlns:converters="clr-namespace:LabelPrinter.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="650"
+             d:DesignWidth="1200">
+
+    <UserControl.Resources>
+
+        <converters:RowIndexConverter x:Key="RowIndexConverter"/>
+
+    </UserControl.Resources>
+
+    <Grid Margin="15">
+
+        <Grid.RowDefinitions>
+            <!-- Toolbar -->
+            <RowDefinition Height="Auto"/>
+
+            <!-- Nội dung -->
+            <RowDefinition Height="*"/>
+
+            <!-- Footer -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+
+        <!-- ===================== TOOLBAR ===================== -->
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    Margin="0,0,0,10">
+
+            <Button Content="📂 Import Excel"
+                    Width="130"
+                    Height="40"
+                    Margin="0,0,10,0"
+                    Command="{Binding ImportExcelCommand}"/>
+
+            <Button Content="👁 Xem trước"
+                    Width="120"
+                    Height="40"
+                    Margin="0,0,10,0"/>
+
+            <Button Content="🖨 In tem"
+        Width="100"
+        Height="40"
+        Command="{Binding PrintSelectedCommand}"/>
+           
+        </StackPanel>
+
+
+        <!-- ===================== CONTENT ===================== -->
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+
+                <!-- Danh sách -->
+                <ColumnDefinition Width="*"/>
+
+                <!-- Preview -->
+                <ColumnDefinition Width="400"/>
+
+            </Grid.ColumnDefinitions>
+
+
+            <!-- =================================================
+                 BÊN TRÁI - DATAGRID
+                 ================================================= -->
+
+            <DataGrid Grid.Column="0"
+                      ItemsSource="{Binding Labels}"
+                      SelectedItem="{Binding SelectedLabel}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      HeadersVisibility="Column"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,0,15,0">
+
+                <DataGrid.Columns>
+
+                    <!-- STT -->
+                    <DataGridTemplateColumn Header="STT"
+                                            Width="60">
+
+                        <DataGridTemplateColumn.CellTemplate>
+
+                            <DataTemplate>
+
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+
+                                    <TextBlock.Text>
+
+                                        <Binding RelativeSource="{RelativeSource AncestorType=DataGridRow}"
+                                                 Converter="{StaticResource RowIndexConverter}"/>
+
+                                    </TextBlock.Text>
+
+                                </TextBlock>
+
+                            </DataTemplate>
+
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+
+                    <!-- Tên hàng -->
+                    <DataGridTextColumn Header="Tên hàng"
+                                        Width="250"
+                                        Binding="{Binding TenHang}"/>
+
+
+                    <!-- Thành phần -->
+                    <DataGridTextColumn Header="Thành phần"
+                                        Width="180"
+                                        Binding="{Binding ThanhPhan}"/>
+
+
+                    <!-- Xuất xứ -->
+                    <DataGridTextColumn Header="Xuất xứ"
+                                        Width="150"
+                                        Binding="{Binding XuatXu}"/>
+
+
+                    <!-- Bảo quản -->
+                    <DataGridTextColumn Header="Bảo quản"
+                                        Width="180"
+                                        Binding="{Binding BaoQuan}"/>
+
+
+                    <!-- Ngày sản xuất -->
+                    <DataGridTextColumn Header="Ngày sản xuất"
+                                        Width="120"
+                                        Binding="{Binding NgaySanXuat}"/>
+
+
+                    <!-- Hạn sử dụng -->
+                    <DataGridTextColumn Header="Hạn sử dụng"
+                                        Width="120"
+                                        Binding="{Binding HanSuDung}"/>
+
+
+                    <!-- Nhà phân phối -->
+                    <DataGridTextColumn Header="Nhà phân phối"
+                                        Width="200"
+                                        Binding="{Binding NhaPhanPhoi}"/>
+
+
+                    <!-- Địa chỉ nhà phân phối -->
+                    <DataGridTextColumn Header="Địa chỉ nhà phân phối"
+                                        Width="250"
+                                        Binding="{Binding DiaChiNhaPhanPhoi}"/>
+
+
+                    <!-- Nơi sản xuất -->
+                    <DataGridTextColumn Header="Nơi sản xuất"
+                                        Width="200"
+                                        Binding="{Binding NoiSanXuat}"/>
+
+
+                    <!-- Địa chỉ sản xuất -->
+                    <DataGridTextColumn Header="Địa chỉ sản xuất"
+                                        Width="250"
+                                        Binding="{Binding DiaChiSanXuat}"/>
+
+
+                    <!-- Số tem -->
+                    <DataGridTextColumn Header="Số tem"
+                                        Width="90"
+                                        Binding="{Binding SoBanIn}"/>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+
+            <!-- =================================================
+                 BÊN PHẢI - XEM TRƯỚC TEM
+                 ================================================= -->
+
+            <Border Grid.Column="1"
+                    BorderBrush="#BDBDBD"
+                    BorderThickness="1"
+                    CornerRadius="5"
+                    Padding="10">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+
+                    <!-- Tiêu đề -->
+                    <TextBlock Grid.Row="0"
+                               Text="XEM TRƯỚC TEM"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10"/>
+
+
+                    <!-- Vùng Preview -->
+                    <ScrollViewer Grid.Row="1"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+
+                        <Border Width="350"
+                                Background="White"
+                                BorderBrush="Black"
+                                BorderThickness="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Padding="12"
+                                Margin="5">
+
+                            <StackPanel>
+
+
+                                <!-- =========================
+                                     TÊN HÀNG
+                                     ========================= -->
+
+                                <TextBlock Text="{Binding SelectedLabel.TenHang}"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,8"/>
+
+
+                                <!-- =========================
+                                     THÀNH PHẦN
+                                     ========================= -->
+
+                                <TextBlock FontSize="13"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3">
+
+                                    <Run Text="Thành phần: "
+                                         FontWeight="Bold"/>
+
+                                    <Run Text="{Binding SelectedLabel.ThanhPhan}"/>
+
+                                </TextBlock>
+
+
+                                <!-- =========================
+                                     XUẤT XỨ
+                                     ========================= -->
+
+                                <TextBlock FontSize="13"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3">
+
+                                    <Run Text="Xuất xứ: "
+                                         FontWeight="Bold"/>
+
+                                    <Run Text="{Binding SelectedLabel.XuatXu}"/>
+
+                                </TextBlock>
+
+
+                                <!-- =========================
+                                     BẢO QUẢN
+                                     ========================= -->
+
+                                <TextBlock FontSize="13"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3">
+
+                                    <Run Text="Bảo quản: "
+                                         FontWeight="Bold"/>
+
+                                    <Run Text="{Binding SelectedLabel.BaoQuan}"/>
+
+                                </TextBlock>
+
+
+                                <!-- =========================
+                                     NGÀY SẢN XUẤT
+                                     ========================= -->
+
+                                <TextBlock FontSize="13"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3">
+
+                                    <Run Text="NSX: "
+                                         FontWeight="Bold"/>
+
+                                    <Run Text="{Binding SelectedLabel.NgaySanXuat}"/>
+
+                                </TextBlock>
+
+
+                                <!-- =========================
+                                     HẠN SỬ DỤNG
+                                     ========================= -->
+
+                                <TextBlock FontSize="13"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3">
+
+                                    <Run Text="HSD: "
+                                         FontWeight="Bold"/>
+
+                                    <Run Text="{Binding SelectedLabel.HanSuDung}"/>
+
+                                </TextBlock>
+
+
+                                <!-- Đường phân cách -->
+                                <Border Height="1"
+                                        Background="#888888"
+                                        Margin="0,8"/>
+
+
+                                <!-- =========================
+                                     NHÀ PHÂN PHỐI
+                                     ========================= -->
+
+                                <TextBlock FontSize="12"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3">
+
+                                    <Run Text="Nhà phân phối: "
+                                         FontWeight="Bold"/>
+
+                                    <Run Text="{Binding SelectedLabel.NhaPhanPhoi}"/>
+
+                                </TextBlock>
+
+
+                                <!-- ĐỊA CHỈ NHÀ PHÂN PHỐI -->
+                                <TextBlock Text="{Binding SelectedLabel.DiaChiNhaPhanPhoi}"
+                                           FontSize="12"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3"/>
+
+
+                                <!-- =========================
+                                     NƠI SẢN XUẤT
+                                     ========================= -->
+
+                                <TextBlock FontSize="12"
+                                           TextWrapping="Wrap"
+                                           Margin="0,5,0,3">
+
+                                    <Run Text="Nơi sản xuất: "
+                                         FontWeight="Bold"/>
+
+                                    <Run Text="{Binding SelectedLabel.NoiSanXuat}"/>
+
+                                </TextBlock>
+
+
+                                <!-- ĐỊA CHỈ SẢN XUẤT -->
+                                <TextBlock Text="{Binding SelectedLabel.DiaChiSanXuat}"
+                                           FontSize="12"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3"/>
+
+
+                                <!-- Đường phân cách -->
+                                <Border Height="1"
+                                        Background="#888888"
+                                        Margin="0,8"/>
+
+
+                                <!-- =========================
+                                     BARCODE - TẠM THỜI
+                                     ========================= -->
+
+                                <StackPanel HorizontalAlignment="Center"
+                                            Margin="0,5">
+
+                                    <TextBlock Text="||||||||||||||||||||||||"
+                                               FontSize="22"
+                                               FontFamily="Libre Barcode 128"
+                                               HorizontalAlignment="Center"/>
+
+                                    <TextBlock Text="{Binding SelectedLabel.TenHang}"
+                                               FontSize="11"
+                                               HorizontalAlignment="Center"/>
+
+                                </StackPanel>
+
+
+                                <!-- SỐ LƯỢNG TEM -->
+                                <TextBlock HorizontalAlignment="Right"
+                                           Margin="0,10,0,0"
+                                           FontSize="11">
+
+                                    <Run Text="Số tem: "
+                                         FontWeight="Bold"/>
+
+                                    <Run Text="{Binding SelectedLabel.SoBanIn}"/>
+
+                                </TextBlock>
+
+
+                            </StackPanel>
+
+                        </Border>
+
+                    </ScrollViewer>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+
+        <!-- ===================== FOOTER ===================== -->
+
+        <Border Grid.Row="2"
+                Margin="0,10,0,0"
+                Padding="15"
+                Background="#F5F5F5">
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <TextBlock Grid.Column="0"
+                           Text="Số mặt hàng:"
+                           FontWeight="Bold"
+                           FontSize="15"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding TongSoMatHang}"
+                           FontSize="15"
+                           Margin="5,0,0,0"/>
+
+
+                <TextBlock Grid.Column="3"
+                           Text="Tổng số tem:"
+                           FontWeight="Bold"
+                           FontSize="15"/>
+
+                <TextBlock Grid.Column="4"
+                           Text="{Binding TongSoTem}"
+                           FontSize="15"
+                           Margin="5,0,0,0"/>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</UserControl>
