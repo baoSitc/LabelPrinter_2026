@@ -181,16 +181,26 @@ namespace LabelPrinter.Services
                 result.Add(new LabelData
                 {
                     ThanhPhan = thanhPhan,
-                    TenHang = tenHang,
+                    TenHang = tenHang.ToUpper(),
                     BaoQuan = baoQuan?? "-18 độ C",
                     XuatXu = xuatXu,
                     NgaySanXuat = ngaySanXuat?? DateTime.MinValue.ToString("dd/MM/yyyy"),
                     HanSuDung = hanSuDung,
-                    HuongDanSuDung = huongDanSuDung?? "Nấu chín trước khi dùng",
-                    NhaPhanPhoi = nhaPhanPhoi?? "Công Ty TNHH Thực Phẩm VietSuun Food",
-                    DiaChiNhaPhanPhoi = diaChiNhaPhanPhoi?? "763/5/4/19 Trường Chinh, Phường Tây Thạnh, TP.HCM",
-                    NoiSanXuat = noiSanXuat?? "Chi nhánh " + nhaPhanPhoi,
-                    DiaChiSanXuat = diaChiSanXuat?? "57 Liên Khu 2-10, Phường Bình Hưng Hòa, TP.HCM",
+                    HuongDanSuDung = string.IsNullOrWhiteSpace(huongDanSuDung)
+                            ? "Nấu chín trước khi dùng"
+                            : huongDanSuDung,
+                    NhaPhanPhoi = string.IsNullOrWhiteSpace(nhaPhanPhoi)
+                            ? "Công Ty TNHH Thực Phẩm VietSuun Food"
+                            : nhaPhanPhoi,
+                    DiaChiNhaPhanPhoi = string.IsNullOrWhiteSpace(diaChiNhaPhanPhoi)
+                            ? "763/5/4/19 Trường Chinh, Phường Tây Thạnh, TP.HCM"
+                            : diaChiNhaPhanPhoi,
+                    NoiSanXuat = string.IsNullOrWhiteSpace(noiSanXuat)
+                            ? "Chi nhánh " + nhaPhanPhoi
+                            : noiSanXuat,
+                    DiaChiSanXuat = string.IsNullOrWhiteSpace(diaChiSanXuat)
+                            ? "57 Liên Khu 2-10, Phường Bình Hưng Hòa, TP.HCM"
+                            : diaChiSanXuat ,
                     SoBanIn = soLuong
                 });
             }

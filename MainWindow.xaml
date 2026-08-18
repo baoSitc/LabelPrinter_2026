@@ -1,175 +1,47 @@
 ﻿<Window x:Class="LabelPrinter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LabelPrinter"
-       mc:Ignorable="d"
-        Title="Label Printer"
-        Width="1000"
-        Height="650"
+         xmlns:views="clr-namespace:LabelPrinter.Views"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="LabelPrinter - Phần mềm in tem"
+        WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
-    <Grid Margin="20">
+
+    <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Tiêu đề -->
-        <TextBlock Grid.Row="0"
-                   Text="LABEL PRINTER"
-                   FontSize="28"
-                   FontWeight="Bold"
-                   Margin="0,0,0,20"/>
 
-        <Grid Grid.Row="1">
+        <!-- ===================================== -->
+        <!-- HEADER -->
+        <!-- ===================================== -->
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="0"
+                Background="#1976D2"
+                Padding="20">
 
-            <!-- Thông tin tem -->
-            <GroupBox Grid.Column="0"
-                      Header="Thông tin tem"
-                      Padding="15">
+            <TextBlock Text="LABEL PRINTER"
+                       Foreground="White"
+                       FontSize="24"
+                       FontWeight="Bold"/>
 
-                <Grid>
+        </Border>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
 
-                    <!-- Tên hàng -->
-                    <StackPanel Grid.Row="0"
-                                Margin="0,0,0,15">
+        <!-- ===================================== -->
+        <!-- LABEL VIEW -->
+        <!-- ===================================== -->
 
-                        <TextBlock Text="Tên hàng"
-                                   Margin="0,0,0,5"/>
+        <ContentControl Grid.Row="1">
 
-                        <TextBox Text="{Binding TenHang, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="35"/>
+            <views:LabelView/>
 
-                    </StackPanel>
-
-                    <!-- Mã hàng -->
-                    <StackPanel Grid.Row="1"
-                                Margin="0,0,0,15">
-
-                        <TextBlock Text="Mã hàng"
-                                   Margin="0,0,0,5"/>
-
-                        <TextBox Text="{Binding MaHang, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="35"/>
-
-                    </StackPanel>
-
-                    <!-- Giá -->
-                    <StackPanel Grid.Row="2"
-                                Margin="0,0,0,15">
-
-                        <TextBlock Text="Giá"
-                                   Margin="0,0,0,5"/>
-
-                        <TextBox Text="{Binding Gia, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="35"
-                                 HorizontalContentAlignment="Right"/>
-
-                    </StackPanel>
-
-                    <!-- Số lượng -->
-                    <StackPanel Grid.Row="3"
-                                Margin="0,0,0,15">
-
-                        <TextBlock Text="Số lượng"
-                                   Margin="0,0,0,5"/>
-
-                        <TextBox Text="{Binding SoLuong, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="35"
-                                 HorizontalContentAlignment="Right"/>
-
-                    </StackPanel>
-
-                    <!-- Button -->
-                    <StackPanel Grid.Row="4"
-                                Orientation="Horizontal"
-                                VerticalAlignment="Bottom">
-
-                        <Button Content="🖨 In tem"
-                                Command="{Binding InTemCommand}"
-                                Width="130"
-                                Height="40"
-                                Margin="0,0,10,0"/>
-
-                        <Button Content="Xóa"
-                                Command="{Binding XoaCommand}"
-                                Width="100"
-                                Height="40"/>
-
-                    </StackPanel>
-
-                </Grid>
-
-            </GroupBox>
-
-            <!-- Preview -->
-            <GroupBox Grid.Column="2"
-                      Header="Xem trước tem"
-                      Padding="20">
-
-                <Border BorderBrush="Gray"
-                        BorderThickness="1"
-                        Width="400"
-                        Height="250"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-
-                    <Grid Margin="15">
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Text="{Binding TenHang}"
-                                   FontSize="22"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"/>
-
-                        <StackPanel Grid.Row="1"
-                                    VerticalAlignment="Center">
-
-                            <TextBlock Text="{Binding MaHang}"
-                                       FontSize="18"
-                                       HorizontalAlignment="Center"/>
-
-                            <TextBlock Text="{Binding Gia, StringFormat={}{0:N0} đ}"
-                                       FontSize="24"
-                                       FontWeight="Bold"
-                                       HorizontalAlignment="Center"
-                                       Margin="0,10"/>
-
-                        </StackPanel>
-
-                        <TextBlock Grid.Row="2"
-                                   Text="{Binding SoLuong, StringFormat=Số lượng: {0}}"
-                                   HorizontalAlignment="Right"/>
-
-                    </Grid>
-
-                </Border>
-
-            </GroupBox>
-
-        </Grid>
+        </ContentControl>
 
     </Grid>
+
 </Window>
