@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LabelPrinter.Models;
 using LabelPrinter.Services;
 using Microsoft.Win32;
@@ -14,9 +15,17 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace LabelPrinter.ViewModels
+
 {
+   
     public class LabelViewModel : INotifyPropertyChanged
     {
+
+        private bool isPrinting;
+
+        public ICommand PrintSelectedCommand { get; }
+
+        private string printStatus = "";
         private readonly ExcelService _excelService;
         private readonly LabelService _labelService;
         private readonly PrinterService _printerService;
@@ -37,6 +46,65 @@ namespace LabelPrinter.ViewModels
                 OnPropertyChanged();
             }
         }
+        // =========================================================
+        // TRẠNG THÁI IN
+        // =========================================================
+        private void PrintSelected(object? parameter)
+        {
+            if (SelectedLabel == null)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn mặt hàng cần in.",
+                    "Thông báo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+
+                return;
+            }
+
+            if (SelectedLabel.SoBanIn <= 0)
+            {
+                MessageBox.Show(
+                    "Số bản in phải lớn hơn 0.",
+                    "Thông báo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+
+                return;
+            }
+
+            try
+            {
+                int soBanIn = SelectedLabel.SoBanIn;
+
+                byte[] data =
+                    _labelService.CreateTsplBitmapCommand(
+                        SelectedLabel,
+                        soBanIn);
+
+                _printerService.PrintRaw(
+                    "TD-401",
+                    data);
+
+                MessageBox.Show(
+                    $"Đã gửi lệnh in {soBanIn} tem.\n\n" +
+                    $"Tên hàng: {SelectedLabel.TenHang}",
+                    "In tem",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Không thể in tem.\n\n{ex.Message}",
+                    "Lỗi in",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+
+
 
         public int TongSoMatHang
         {
@@ -57,8 +125,7 @@ namespace LabelPrinter.ViewModels
             _printerService = new PrinterService();
 
             ImportExcelCommand = new RelayCommand(ImportExcel);
-
-          
+            PrintSelectedCommand = new RelayCommand(PrintSelected);
 
         }
        
